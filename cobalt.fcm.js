@@ -3,13 +3,16 @@
         'name': 'Fcm',
         init: function (settings) {
             // Create shortcuts
-            cobalt.getToken = this.getToken.bind(this);
-            cobalt.subscribeToTopic = this.subscribeToTopic.bind(this);
-            cobalt.unsubscribeFromTopic = this.unsubscribeFromTopic.bind(this);
-            cobalt.tokenRegister = this.tokenRegister.bind(this);
-            cobalt.getTopics = this.getTopics.bind(this);
-            cobalt.saveTopic = this.saveTopic.bind(this);
-            cobalt.sendNotification = this.sendNotification.bind(this);
+            cobalt.fcm={
+                init: this.init.bind(this),
+                getToken : this.getToken.bind(this),
+                subscribeToTopic : this.subscribeToTopic.bind(this),
+                unsubscribeFromTopic : this.unsubscribeFromTopic.bind(this),
+                tokenRegister : this.tokenRegister.bind(this),
+                getTopics : this.getTopics.bind(this),
+                saveTopic : this.saveTopic.bind(this),
+                sendNotification : this.sendNotification.bind(this)
+            };
 
             if (settings) {
                 this.config(settings);
@@ -17,6 +20,18 @@
         },
 
         config: function(settings){},
+
+        init: function(callback){
+            cobalt.log("Initialization of FCM Plugin")
+            this.send("initFCM", {}, function(){
+                if (typeof callback =="function"){
+                    callback();
+                }
+                else{
+                    cobalt.log('FCM Plugin was initialized successfully');
+                }
+            });
+        },
 
         //Méthode générale pour envoyer les calls ajax
         ajax:function(params, callback){
@@ -27,7 +42,7 @@
 
             request.onreadystatechange = function () {
                 if (request.readyState != 4 || request.status != 200){
-                    cobalt.log("Erreur dans le call à " + params.url + " : " + request.status);
+                    
                 }
                 else{
                     if (typeof callback == 'function'){
@@ -97,8 +112,6 @@
         tokenRegister: function(data, callback){
             data.url = 'notifications/register';
             this.ajax(data, function(retour){
-                cobalt.log("Retour serveur du call tokenRegister = ", retour);
-
                 if (typeof callback == 'function'){
                     callback(retour);
                 }
@@ -111,7 +124,6 @@
         getTopics:function(data, callback){
             data.url = 'notifications/topics/get';
             this.ajax(data, function(retour){
-                cobalt.log("Retour serveur du call getTopics = ", retour);
 
                 if (typeof callback == 'function'){
                     callback(retour.topics);
@@ -125,7 +137,6 @@
         saveTopic:function(data, callback) {
             data.url = 'notifications/topics/save';
             this.ajax(data, function(retour){
-                cobalt.log("Retour serveur du call saveTopics = ", retour);
 
                 if (typeof callback == 'function'){
                     callback(retour);
@@ -139,7 +150,6 @@
         sendNotification:function(data, callback){
             data.url = 'notifications/push';
             this.ajax(data, function(retour){
-                cobalt.log("Retour serveur du call sendNotification = ", retour);
 
                 if (typeof callback == 'function'){
                     callback(retour);
