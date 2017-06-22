@@ -21,18 +21,6 @@
 
         config: function(settings){},
 
-        init: function(callback){
-            cobalt.log("Initialization of FCM Plugin")
-            this.send("initFCM", {}, function(){
-                if (typeof callback =="function"){
-                    callback();
-                }
-                else{
-                    cobalt.log('FCM Plugin was initialized successfully');
-                }
-            });
-        },
-
         //Méthode générale pour envoyer les calls ajax
         ajax:function(params, callback){
             var url = 'http://www.build.kristal.io/' + params.url;
