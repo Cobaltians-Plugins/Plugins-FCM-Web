@@ -1,6 +1,9 @@
 (function(cobalt){
     var plugin = {
-        'name': 'Fcm',
+        classes: {
+        	android: 'io.kristal.fcmplugin.FcmPlugin',
+			ios: 'FcmPlugin'
+        }
         init: function () {
             // Create shortcuts
             cobalt.fcm={
@@ -58,9 +61,6 @@
                     cobalt.log('Received infos = ', data, typeof callback);
                 }
             });
-        },
-        handleEvent:function(json){
-            cobalt.log(this.name, ' plugin : unknown event received :', json)
         }
     };
     cobalt.plugins.register(plugin);
