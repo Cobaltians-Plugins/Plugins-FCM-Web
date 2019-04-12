@@ -25,7 +25,7 @@
 
         getToken: function(callback){
             cobalt.log("Sending event getToken to the native side")
-            this.send("getToken", {}, function(data){
+            cobalt.plugins.send(this, "getToken", {}, function(data){
                 if (typeof callback =="function"){
                     callback(data);
                 }
@@ -38,7 +38,7 @@
         subscribeToTopic: function(topic, callback){
             cobalt.log("Sending event subscribeToTopic to the native side")
             var donnees = {'topic': topic};
-            this.send("subscribeToTopic", donnees, function(data){
+            cobalt.plugins.send(this, "subscribeToTopic", donnees, function(data){
                 if (typeof callback == 'function'){
                     callback(data);
                 }
@@ -50,7 +50,7 @@
 
         unsubscribeFromTopic: function(topic, callback){
             var donnees = {'topic': topic};
-            this.send("unsubscribeFromTopic", donnees, function(data){
+            cobalt.plugins.send(this, "unsubscribeFromTopic", donnees, function(data){
                 if (typeof callback == 'function'){
                     callback(data);
                 }
@@ -61,9 +61,6 @@
         },
         handleEvent:function(json){
             cobalt.log(this.name, ' plugin : unknown event received :', json)
-        },
-        send:function(action, data, callback){
-            cobalt.send({ type : "plugin", name : this.name, action : action, data : data }, callback);
         }
     };
     cobalt.plugins.register(plugin);
