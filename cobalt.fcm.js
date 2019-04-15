@@ -1,5 +1,6 @@
 (function(cobalt) {
   var plugin = {
+    name: 'CobaltFcmPlugin',
     classes: {
       android: 'io.kristal.fcmplugin.FcmPlugin',
       ios: 'FcmPlugin'
