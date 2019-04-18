@@ -19,36 +19,13 @@
       };
     },
     getToken: function(callback) {
-      cobalt.fcm.callbacks.onGetTokenResult = callback;
-      cobalt.plugins.send(this, "getToken", {});
+      cobalt.plugins.send(this, "getToken", {}, callback || this.callbacks.onGetTokenResult);
     },
     subscribeToTopic: function(topic, callback) {
-      cobalt.fcm.callbacks.onSubscribeToTopicResult = callback;
-      cobalt.plugins.send(this, "subscribeToTopic", {'topic': topic});
+      cobalt.plugins.send(this, "subscribeToTopic", {'topic': topic}, callback || this.callbacks.onSubscribeToTopicResult);
     },
-
     unsubscribeFromTopic: function(topic, callback) {
-      cobalt.fcm.callbacks.onUnsubscribeToTopicResult = callback;
-      cobalt.plugins.send(this, "unsubscribeFromTopic", {'topic': topic});
-    },
-    handleEvent: function(json) {
-      switch (json && json.action) {
-        case 'getToken':
-          if (typeof cobalt.fcm.callbacks.onGetTokenResult === 'function') {
-            cobalt.fcm.callbacks.onGetTokenResult(json.data);
-          }
-          break;
-        case 'subscribeToTopic':
-          if (typeof cobalt.fcm.callbacks.onSubscribeToTopicResult === 'function') {
-            cobalt.fcm.callbacks.onSubscribeToTopicResult(json.data);
-          }
-          break;
-        case 'unsubscribeFromTopic':
-          if (typeof cobalt.fcm.callbacks.onUnsubscribeToTopicResult === 'function') {
-            cobalt.fcm.callbacks.onUnsubscribeToTopicResult(json.data);
-          }
-          break;
-      }
+      cobalt.plugins.send(this, "unsubscribeFromTopic", {'topic': topic}, callback || this.callbacks.onUnsubscribeToTopicResult);
     }
   };
   cobalt.plugins.register(plugin);
